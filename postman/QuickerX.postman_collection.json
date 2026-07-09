@@ -1,0 +1,243 @@
+{
+  "info": {
+    "name": "Quicker-X API — Phase 1",
+    "description": "Auth, Customer, Shop Owner, Admin — Phase 1 endpoints",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000/api/v1" },
+    { "key": "access_token", "value": "" },
+    { "key": "refresh_token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Customer Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/auth/register/",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"customer@example.com\",\n  \"phone_number\": \"+919876543210\",\n  \"full_name\": \"Jane Doe\",\n  \"password\": \"StrongPass1!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/auth/login/",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"customer@example.com\",\n  \"password\": \"StrongPass1!\",\n  \"device_id\": \"device-123\",\n  \"device_type\": \"ANDROID\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/auth/refresh/",
+            "body": { "mode": "raw", "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}" }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/auth/logout/",
+            "body": { "mode": "raw", "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}" }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/auth/forgot-password/",
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"customer@example.com\"\n}" }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/auth/reset-password/",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"customer@example.com\",\n  \"otp\": \"123456\",\n  \"new_password\": \"NewStrongPass1!\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/auth/verify-otp/",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"target\": \"customer@example.com\",\n  \"purpose\": \"EMAIL_VERIFICATION\",\n  \"otp\": \"123456\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customer Profile",
+      "item": [
+        {
+          "name": "Get Me",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/users/me/"
+          }
+        },
+        {
+          "name": "Update Me",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/users/me/",
+            "body": { "mode": "raw", "raw": "{\n  \"full_name\": \"Jane A. Doe\"\n}" }
+          }
+        },
+        {
+          "name": "Add Address",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/users/me/addresses/",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"address_type\": \"HOME\",\n  \"line1\": \"221B Baker Street\",\n  \"city\": \"Pune\",\n  \"state\": \"Maharashtra\",\n  \"postal_code\": \"411001\",\n  \"is_default\": true\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Shop Owner",
+      "item": [
+        {
+          "name": "Register Request (multipart)",
+          "request": {
+            "method": "POST",
+            "url": "{{base_url}}/shop-owner/register-request/",
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "owner_full_name", "value": "Raj Kumar" },
+                { "key": "owner_email", "value": "shopowner@example.com" },
+                { "key": "owner_phone_number", "value": "+919876500000" },
+                { "key": "password", "value": "StrongPass1!" },
+                { "key": "shop_name", "value": "Raj General Store" },
+                { "key": "business_type", "value": "INDIVIDUAL" },
+                { "key": "address_line1", "value": "MG Road" },
+                { "key": "city", "value": "Pune" },
+                { "key": "state", "value": "Maharashtra" },
+                { "key": "postal_code", "value": "411001" },
+                { "key": "document_pan_card", "type": "file", "src": [] },
+                { "key": "image_logo", "type": "file", "src": [] }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Shop Owner Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/shop-owner/login/",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"shopowner@example.com\",\n  \"password\": \"StrongPass1!\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "List Pending Shop Owners",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/admin/shop-owner/pending/"
+          }
+        },
+        {
+          "name": "Approve Shop Owner",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/admin/shop-owner/{{registration_id}}/approve/"
+          }
+        },
+        {
+          "name": "Reject Shop Owner",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/admin/shop-owner/{{registration_id}}/reject/",
+            "body": { "mode": "raw", "raw": "{\n  \"reason\": \"Incomplete documents\"\n}" }
+          }
+        },
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/admin/users/"
+          }
+        },
+        {
+          "name": "Activate User",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/admin/users/{{user_id}}/activate/"
+          }
+        },
+        {
+          "name": "Deactivate User",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/admin/users/{{user_id}}/deactivate/"
+          }
+        },
+        {
+          "name": "Delete User (soft)",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/admin/users/{{user_id}}/"
+          }
+        }
+      ]
+    }
+  ]
+}
