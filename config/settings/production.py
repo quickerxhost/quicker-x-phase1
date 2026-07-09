@@ -3,6 +3,12 @@ import os
 
 DEBUG = False
 
+ALLOWED_HOSTS = [
+    'quicker-x-phase1.onrender.com', 
+    '127.0.0.1', 
+    'localhost'
+]
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
